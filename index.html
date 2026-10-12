@@ -360,6 +360,10 @@ h2{font-size:1.5rem;margin:40px 0 8px}
 .vadd h3{margin:0 0 6px}
 .vadd small{display:block;color:var(--mute);margin:6px 0}
 .vadd textarea,.vadd input[type=text]{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);margin:6px 0}
+
+.pub{flex-wrap:wrap}.pub span{flex-wrap:wrap}
+body:has(.pub) #up{bottom:calc(var(--tabh) + 104px + env(safe-area-inset-bottom,0px))}
+@media (min-width:900px){body:has(.pub) #up{bottom:84px}}
 </style>
 </head>
 <body>
@@ -603,7 +607,7 @@ function route(){
  view(w);if(window.__fbui)window.__fbui.page(w,h[0]==='t'?h[1]:(h[0]===''||h[0]==null)?'home':(h[0]==='docs'||h[0]==='about')?h[0]:'');
  w.appendChild(E('div','foot',D.p.name+', '+D.p.post+'. '+D.p.base+'.'));
  app.appendChild(tabs(cur));app.appendChild(drawer());
- if(owner&&dirty){var b=E('div','pub');b.appendChild(E('span',null,'You have unpublished changes'));var dl=Btn('Download file',exportFile),g=E('span');g.style.cssText='display:flex;gap:8px';g.appendChild(dl);if(window.__fbui&&window.__fbui.gh)g.appendChild(window.__fbui.gh());if(window.claude&&window.claude.use){var pb=Btn('Publish changes',function(){publish(pb)});g.appendChild(pb)}b.appendChild(g);app.appendChild(b)}
+ if(owner&&dirty){var b=E('div','pub');b.appendChild(E('span',null,'You have unpublished changes'));var dl=Btn('Download file',exportFile),g=E('span');g.style.cssText='display:flex;gap:8px';g.appendChild(dl);if(window.__fbui&&window.__fbui.cloud)g.appendChild(window.__fbui.cloud());else if(window.__fbui&&window.__fbui.gh)g.appendChild(window.__fbui.gh());if(window.claude&&window.claude.use){var pb=Btn('Publish changes',function(){publish(pb)});g.appendChild(pb)}b.appendChild(g);app.appendChild(b)}
 }
 var ACCL={open:'Open access',view:'View only',request:'Request access',code:'Unlock with access code'};
 function acc(x){if(x.e)return x.a==='code'?'code':'request';if(!x.u)return 'request';return x.a==='view'?'view':'open'}
@@ -1058,7 +1062,7 @@ function load(u){return new Promise(function(a,b){var s=document.createElement('
 function refresh(){if(S())S().route()}
 function boot(){if(!ON)return;var b='https://www.gstatic.com/firebasejs/10.13.0/firebase-';
  load(b+'app-compat.js').then(function(){return load(b+'auth-compat.js')}).then(function(){return load(b+'firestore-compat.js')}).then(function(){
-  firebase.initializeApp(FB);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(onUser)}).catch(function(){state='offline';refresh()})}
+  firebase.initializeApp(FB);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(onUser);cloudLoad()}).catch(function(){state='offline';refresh()})}
 async function onUser(u){
  user=u;
  if(!u){state='out';if(viaFb){viaFb=false;S().setOwner(false)}return refresh()}
@@ -1142,6 +1146,32 @@ ui.admin=function(w){
   [['pending','Waiting for approval'],['approved','Approved']].forEach(function(g){var a=s.docs.filter(function(d){return(d.data().status||'pending')===g[0]});L.appendChild($('h3',null,g[1]+' ('+a.length+')'));
    if(!a.length)L.appendChild($('p','sub','None.'));a.forEach(function(d){L.appendChild(item(d,d.data()))})})},function(){L.textContent='Could not load. Check the Firestore rules.'})}
  draw()};
+
+/* Cloud save: site content kept in Firestore (siteContent), read by every visitor */
+var CK=300000;
+function chunks(t){var a=[],i=0;while(i<t.length){var e=Math.min(t.length,i+CK),c=t.charCodeAt(e);if(e<t.length&&c>=0xDC00&&c<=0xDFFF)e++;a.push(t.slice(i,e));i=e}return a}
+async function cloudLoad(){
+ try{
+  var col=db.collection('siteContent'),m=await col.doc('meta').get();if(!m.exists)return;
+  var md=m.data(),D=S().D;if(!(md.rev>(+D.rev||0))||S().editing())return;
+  var ds=await Promise.all(Array.apply(null,Array(md.n)).map(function(_,i){return col.doc('c'+i).get()})),t='';
+  for(var i=0;i<ds.length;i++){if(!ds[i].exists||ds[i].data().rev!==md.rev)return;t+=ds[i].data().t}
+  var nd=JSON.parse(t);if(!nd||!nd.p||!nd.sections)return;
+  Object.keys(D).forEach(function(k){delete D[k]});Object.assign(D,nd);D.rev=md.rev;S().route()
+ }catch(e){}}
+async function cloudPub(b){
+ if(!db||state!=='owner'){alert('Sign in as the owner first, then publish.');return}
+ b.disabled=true;b.textContent='Saving...';
+ try{
+  var col=db.collection('siteContent'),D=S().D,old=await col.doc('meta').get(),oldN=old.exists?(old.data().n||0):0;
+  if(old.exists&&old.data().rev>(+D.rev||0)&&!confirm('A newer version was saved online since this page opened. Replace it with the version on this screen?')){b.disabled=false;b.textContent='Publish to site';return}
+  var ts=Date.now();D.rev=ts;var parts=chunks(JSON.stringify(D)),bt=db.batch();
+  parts.forEach(function(p,i){bt.set(col.doc('c'+i),{i:i,rev:ts,t:p})});
+  for(var j=parts.length;j<oldN;j++)bt.delete(col.doc('c'+j));
+  bt.set(col.doc('meta'),{n:parts.length,rev:ts});
+  await bt.commit();alert('Published. Everyone who opens your link now sees this version.');S().clean()
+ }catch(e){b.disabled=false;b.textContent='Publish to site';alert(e&&e.code==='permission-denied'?'Not allowed yet. Add the siteContent rule in Firebase, then try again.':'Publishing failed. Your edits are still on this page: try again.')}}
+ui.cloud=function(){var b=btn('Publish to site',function(){cloudPub(b)},'');return b};
 /* GitHub publish */
 function ghCfg(force){
  var g=null;try{g=JSON.parse(localStorage.getItem('sc_gh')||'null')}catch(e){}
@@ -1226,7 +1256,7 @@ function tourManage(){
   r.append(t,ib('\u25B2','Move video up',mv(-1),k<1),ib('\u25BC','Move video down',mv(1),k>=V.length-1),ib('Remove','Remove video',function(){V.splice(k,1);openTv=true;S().touch()}));b.appendChild(r)});
  d.appendChild(b);return d}
 function photoFill(box,pk){var D=S().D,ed=S().editing(),G=(D.gal||{})[pk],has=!!(G&&G.p&&G.p.length);
- if(has)box.appendChild(show(G));if(ed)box.appendChild(manage(pk));if(ed&&pk==='home'){box.appendChild(tourManage());box.appendChild($('small','fbs','Site version 25'))}return has||ed}
+ if(has)box.appendChild(show(G));if(ed)box.appendChild(manage(pk));if(ed&&pk==='home'){box.appendChild(tourManage());box.appendChild($('small','fbs','Site version 26'))}return has||ed}
 ui.photos=function(b,pk){photoFill(b,pk)};
 ui.page=function(w,pk){
  if(pk!=='about'&&pk!=='docs')return;var D=S().D,G=(D.gal||{})[pk],box=$('section','gb');
