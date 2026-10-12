@@ -364,6 +364,10 @@ h2{font-size:1.5rem;margin:40px 0 8px}
 .pub{flex-wrap:wrap}.pub span{flex-wrap:wrap}
 body:has(.pub) #up{bottom:calc(var(--tabh) + 104px + env(safe-area-inset-bottom,0px))}
 @media (min-width:900px){body:has(.pub) #up{bottom:84px}}
+
+.org{margin:18px 0}.org h2{margin:0 0 8px}.orh{margin:14px 0 4px;font-size:1rem;color:var(--mute)}
+.orow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;margin:8px 0;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.orow b{flex:1 0 100%;font-family:var(--disp)}
 </style>
 </head>
 <body>
@@ -579,6 +583,40 @@ function segBody(w,sg,t){
  if(edit&&s){var rw=E('div','row');rw.appendChild(Btn('Add item',function(){itemForm(w,s,null)},'pri'));
   if(!sg.tag&&!sg.tagNot)rw.appendChild(Btn('Delete this section',function(){if(this.dataset.a){D.sections=D.sections.filter(function(x){return x!==s});dirty=true;location.hash='#/'}else{this.dataset.a=1;this.textContent='Tap again to delete'}}));
   w.appendChild(rw)}}
+
+/* Organize pages: owner moves sections and blocks between pages */
+var orgOrig=null;
+function orgName(id){if(id==='segs')return 'Sections of this page';if(id.indexOf('seg:')===0){var q=id.slice(4),n=q;TABS().forEach(function(x){(x.seg||[]).forEach(function(g){if(g.id===q)n=g.n})});return n}return BN[id]||id}
+function orgMoveSeg(q,from,to){var L=LYo();L.pg[q]=to;if(L.od[from])L.od[from]=L.od[from].filter(function(x){return x!==q});if(D.ord&&D.ord[from])D.ord[from]=D.ord[from].filter(function(x){return x!=='seg:'+q});dirty=true;route()}
+function orgMoveBlk(id,from,to){D.bpg=D.bpg||{};D.bpg[id]=to;D.ord=D.ord||{};if(D.ord[from])D.ord[from]=D.ord[from].filter(function(x){return x!==id});dirty=true;route()}
+function orgHome(){orgOrig=null;if(location.hash==='#/'||location.hash===''||location.hash==='#')route();else location.hash='#/'}
+function orgCancel(){try{var o=JSON.parse(orgOrig);D.layout=o[0];D.bpg=o[1];D.ord=o[2]}catch(e){}orgHome()}
+function orgRow(label,k,n,pg,swap,mv){
+ var r=E('div','orow');r.appendChild(E('b',null,label));
+ var u=E('button','btn sm','\u25B2 Up'),d=E('button','btn sm','\u25BC Down');u.type=d.type='button';u.disabled=k<1;d.disabled=k>=n-1;
+ u.setAttribute('aria-label','Move '+label+' up');d.setAttribute('aria-label','Move '+label+' down');
+ u.onclick=function(){swap(k-1)};d.onclick=function(){swap(k+1)};r.appendChild(u);r.appendChild(d);
+ if(mv){var se=E('select','acc');se.setAttribute('aria-label','Move '+label+' to another page');var o0=E('option',null,'Move to page...');o0.value='';se.appendChild(o0);
+  TABS().forEach(function(x){if(x.id===pg||!x.seg)return;var o=E('option',null,x.n);o.value=x.id;se.appendChild(o)});
+  se.onchange=function(){if(se.value)mv(se.value)};r.appendChild(se)}
+ return r}
+function organizePage(w){
+ if(!owner){w.appendChild(E('p',null,'Only the owner can organize pages. Sign in as owner first.'));return}
+ if(orgOrig==null)orgOrig=JSON.stringify([D.layout||null,D.bpg||null,D.ord||null]);
+ A(w,E('h1','pt','Organize pages'),E('p','meta','Move sections and blocks to another page and change their order. Tap Done to see your pages organized.'));
+ function bar2(){var r=E('div','row');r.appendChild(Btn('Done',orgHome,'pri'));r.appendChild(Btn('Cancel',orgCancel));r.appendChild(Btn('Reset to original',function(){if(!confirm('Put every section and block back in its original place?'))return;D.layout=null;D.bpg=null;D.ord=null;dirty=true;route()},'sm'));return r}
+ w.appendChild(bar2());
+ TABS().forEach(function(t){
+  var pg=t.id,box=E('section','org'),L=ordOf(pg);box.appendChild(E('h2',null,t.n));
+  L.forEach(function(id,k){var mv=null;
+   if(id.indexOf('seg:')===0)mv=function(to){orgMoveSeg(id.slice(4),pg,to)};
+   else if(id!=='photos'&&id!=='segs')mv=function(to){orgMoveBlk(id,pg,to)};
+   box.appendChild(orgRow(orgName(id),k,L.length,pg,function(j){var a=L.slice(),x=a[k];a[k]=a[j];a[j]=x;D.ord=D.ord||{};D.ord[pg]=a;dirty=true;route()},mv))});
+  if(pg!=='home'&&t.seg.length){box.appendChild(E('h3','orh','Sections on this page'));var ids=t.seg.map(function(g){return g.id});
+   t.seg.forEach(function(sg,k){box.appendChild(orgRow(sg.n,k,t.seg.length,pg,function(j){var a=ids.slice(),x=a[k];a[k]=a[j];a[j]=x;LYo().od[pg]=a;dirty=true;route()},t.seg.length>1?function(to){orgMoveSeg(sg.id,pg,to)}:null))});
+   if(t.seg.length<2)box.appendChild(E('p','sub','This is the only section on this page, so it stays here.'))}
+  w.appendChild(box)});
+ w.appendChild(bar2())}
 function searchPage(w){
  A(w,E('h1','pt','Search'),E('p','meta','Find a role, project, paper or report.'));
  var q=E('input','find');q.type='search';q.placeholder='For example: press, scrap, Brandt, CpK';q.setAttribute('aria-label','Search');q.autocomplete='off';
@@ -596,6 +634,7 @@ function route(){
  else if(h[0]==='docs'){cur='';back=['Home','#/'];title='Documents';view=docs}
  else if(h[0]==='search'){cur='';back=['Home','#/'];title='Search';view=searchPage}
  else if(h[0]==='access'){cur='';back=['Home','#/'];title='Access manager';view=accessPage}
+ else if(h[0]==='organize'){cur='';back=['Home','#/'];title='Organize pages';view=organizePage}
  else if(h[0]==='help'){cur='';back=['Home','#/'];title='How to use';view=helpPage}
  else if(h[0]==='about'){cur='';back=['Home','#/'];title='About the builder';view=aboutPage}
  else if(h[0]==='share'){cur='';back=['Home','#/'];title='Share and feedback';view=sharePage}
@@ -636,6 +675,7 @@ function drawer(){
  var p=E('nav','sheet');p.setAttribute('aria-label','Menu');
  var hd=E('div','sh');hd.appendChild(E('strong',null,'Menu'));hd.appendChild(Btn('Close',function(){openMenu(false)},'sm'));p.appendChild(hd);
  [['#/help','How to use','Find your way around and open files.'],['#/about','About the builder','Who made this site.'],['#/share','Share and feedback','Share the link, send feedback or ask for access.']].forEach(function(r){var a=Lk(null,r[0]);A(a,E('b',null,r[1]),E('span',null,r[2]));a.addEventListener('click',function(){openMenu(false)});p.appendChild(a)});
+ if(owner){var a2=Lk(null,'#/organize');A(a2,E('b',null,'Organize pages'),E('span',null,'Move sections between pages and change their order.'));a2.addEventListener('click',function(){openMenu(false)});p.appendChild(a2)}
  if(owner){var a3=Lk(null,'#/access');A(a3,E('b',null,'Access manager'),E('span',null,'Choose which files open directly, need a request or need a code.'));a3.addEventListener('click',function(){openMenu(false)});p.appendChild(a3)}
  if(ownerReal){var a4=Lk(null,'#');A(a4,E('b',null,owner?'Preview as audience':'Back to owner mode'),E('span',null,owner?'See the site exactly as visitors see it.':'Turn the owner tools back on.'));a4.onclick=function(e){e.preventDefault();owner=!owner;edit=false;openMenu(false);route()};p.appendChild(a4)}
  if(window.__fbui)window.__fbui.menu(p);A(d,bk,p);return d}
@@ -1256,7 +1296,7 @@ function tourManage(){
   r.append(t,ib('\u25B2','Move video up',mv(-1),k<1),ib('\u25BC','Move video down',mv(1),k>=V.length-1),ib('Remove','Remove video',function(){V.splice(k,1);openTv=true;S().touch()}));b.appendChild(r)});
  d.appendChild(b);return d}
 function photoFill(box,pk){var D=S().D,ed=S().editing(),G=(D.gal||{})[pk],has=!!(G&&G.p&&G.p.length);
- if(has)box.appendChild(show(G));if(ed)box.appendChild(manage(pk));if(ed&&pk==='home'){box.appendChild(tourManage());box.appendChild($('small','fbs','Site version 26'))}return has||ed}
+ if(has)box.appendChild(show(G));if(ed)box.appendChild(manage(pk));if(ed&&pk==='home'){box.appendChild(tourManage());box.appendChild($('small','fbs','Site version 27'))}return has||ed}
 ui.photos=function(b,pk){photoFill(b,pk)};
 ui.page=function(w,pk){
  if(pk!=='about'&&pk!=='docs')return;var D=S().D,G=(D.gal||{})[pk],box=$('section','gb');
