@@ -573,6 +573,31 @@ details.dg{margin:10px 0;border:1px solid var(--line);border-radius:var(--r);bac
 .dbody p{margin:0;color:var(--mute);font-size:.92rem;flex:1}
 .dgo{margin-top:6px;color:var(--acc);font-weight:600;font-size:.92rem}
 @media (prefers-reduced-motion:reduce){.dcard,.dimg svg,.dopen{transition:none}.dcard:hover{transform:none}}
+.lt-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
+.lt-chip{font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--co);border-radius:999px;padding:6px 14px}
+.lt-chip:hover,.lt-chip:focus-visible{border-color:var(--co)}
+.lt-wrap{display:grid;gap:18px;margin-top:14px}
+.lt-sec{background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--co);border-radius:14px;padding:16px 0 14px;overflow:hidden}
+.lt-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:0 16px}
+.lt-h h3{font-size:1.25rem}
+.lt-r{color:var(--co);font-weight:600;font-size:.9rem;margin-top:2px}
+.lt-d{margin:8px 16px 0;color:var(--mute);font-size:.93rem}
+.lt-ar{display:flex;gap:6px;flex:none}
+.lt-ar button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;font:inherit;font-size:1.3rem;line-height:1;padding:0}
+.lt-ar button:hover:not(:disabled){border-color:var(--co);color:var(--co)}
+.lt-ar button:disabled{opacity:.35;cursor:default}
+.lt-hint{display:inline-flex;align-items:center;gap:8px;margin:12px 16px 0;padding:5px 13px;border-radius:999px;background:var(--soft);color:var(--ink);font-size:.85rem;font-weight:600}
+.lt-hint i{font-style:normal;display:inline-block;color:var(--co);animation:ltnudge 1.4s ease-in-out infinite}
+.lt-hint.done i{animation:none}
+@keyframes ltnudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+.lt-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;padding:12px 16px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.lt-track::-webkit-scrollbar{display:none}
+.lt-track:focus-visible{outline:2px solid var(--co);outline-offset:-2px}
+.lt-track .dcard{flex:0 0 min(78%,270px);scroll-snap-align:start}
+.lt-dots{display:flex;justify-content:center;gap:7px;margin-top:6px}
+.lt-dots button{width:9px;height:9px;border-radius:5px;border:0;padding:0;background:var(--line);cursor:pointer;transition:width .25s ease,background .25s ease}
+.lt-dots button.on{background:var(--co);width:24px}
+@media (prefers-reduced-motion:reduce){.lt-hint i{animation:none}.lt-dots button{transition:none}}
 </style>
 </head>
 <body>
@@ -716,7 +741,7 @@ function resultsChart(w){
   [['Before',v.a,100,'g'],['After',v.b,v.b/v.a*100,'']].forEach(function(x){var row=E('div','ba'),tr=E('div','trk'),b=E('div','bar '+x[3]);b.style.left='0';b.style.width=x[2]+'%';tr.appendChild(b);A(row,E('span',null,x[0]),tr,E('span','v',fmt(x[1],v.u)));a.appendChild(row)});
   a.appendChild(E('div','drop','Down '+drop(v)+'%'));rc.appendChild(a)});
  w.appendChild(rc)}
-var DEFB=['photos','intro','search','dash','goto','glance','journey','impact','library','contact','miles','bars','results'],BN={intro:'About me',search:'Search bar',dash:'Interactive dashboards',goto:'Where do you want to go',glance:'At a glance',contact:'Contact',photos:'Photos',miles:'Career and professional timeline',bars:'Roles by date',results:'Before and after',journey:'Career journey',impact:'Results you can tap',library:'Document library'},
+var DEFB=['photos','intro','search','dash','goto','glance','journey','impact','library','contact','miles','bars','results'],BN={intro:'About me',search:'Search bar',dash:'Live tools by company',goto:'Where do you want to go',glance:'At a glance',contact:'Contact',photos:'Photos',miles:'Career and professional timeline',bars:'Roles by date',results:'Before and after',journey:'Career journey',impact:'Results you can tap',library:'Document library'},
 BDEF={miles:'experience',bars:'experience',results:'projects'},ANC={miles:'roles',bars:'roles',results:'process'},curSeg=null;
 var BLK={
  intro:function(b,w){var p=D.p,h=E('section','hero'),l=E('div');
@@ -751,20 +776,65 @@ var DASH=[
  {t:'Walton Production Automation',tag:'Automation',d:'Automation work from the production floor: machines, lines and the process behind them.',u:'https://jobexperience01.github.io/Walton-Production-Automation/',c:['#F2822E','#7A1F3D'],
   g:'<g fill="none" stroke="#fff" stroke-width="3"><circle cx="76" cy="84" r="26" fill="rgba(255,255,255,.18)"/><circle cx="76" cy="84" r="9"/><circle cx="130" cy="60" r="16" fill="rgba(255,255,255,.18)"/><circle cx="130" cy="60" r="5"/></g><g stroke="#fff" stroke-width="5" stroke-linecap="round"><path d="M76 52v-8M76 116v8M44 84h-8M108 84h8M54 62l-6-6M98 106l6 6M98 62l6-6M54 106l-6 6"/><path d="M130 40v-6M130 80v6M110 60h-6M150 60h6"/></g><g fill="#fff"><rect x="214" y="48" width="14" height="70" rx="5"/><rect x="214" y="48" width="70" height="14" rx="5"/><circle cx="291" cy="55" r="9" fill="#FFC857"/></g><g fill="#FFC857"><rect x="248" y="112" width="26" height="22" rx="3"/><rect x="304" y="112" width="26" height="22" rx="3"/></g><rect x="20" y="142" width="360" height="12" rx="6" fill="#fff" opacity=".92"/><g fill="#7A1F3D"><circle cx="48" cy="148" r="3"/><circle cx="96" cy="148" r="3"/><circle cx="144" cy="148" r="3"/><circle cx="192" cy="148" r="3"/><circle cx="240" cy="148" r="3"/><circle cx="288" cy="148" r="3"/><circle cx="336" cy="148" r="3"/></g><g fill="#fff" opacity=".9"><rect x="40" y="168" width="320" height="6" rx="3"/></g>'},
  {t:'KPI Incentive Dashboard',tag:'Performance',d:'Track KPIs and see how performance connects to incentives, all in one dashboard.',u:'https://jobexperience01.github.io/KPI_Incentive_Dashboard/',c:['#1FA971','#0B3B3C'],
-  g:'<g fill="none" stroke-linecap="round"><path d="M40 138a54 54 0 0 1 108 0" stroke="#fff" stroke-opacity=".3" stroke-width="14"/><path d="M40 138a54 54 0 0 1 86 -43" stroke="#FFC857" stroke-width="14"/></g><path d="M94 138l24 -34" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="94" cy="138" r="7" fill="#fff"/><text x="94" y="165" fill="#fff" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">KPI score</text><g fill="#fff"><rect x="196" y="110" width="26" height="40" rx="4" opacity=".6"/><rect x="232" y="86" width="26" height="64" rx="4" opacity=".8"/><rect x="268" y="62" width="26" height="88" rx="4"/><rect x="304" y="40" width="26" height="110" rx="4" fill="#FFC857"/></g><path d="M200 96l36 -24 36 -22 36 -20" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="5 5"/><rect x="190" y="156" width="150" height="3" rx="2" fill="#fff" opacity=".7"/>'}
+  g:'<g fill="none" stroke-linecap="round"><path d="M40 138a54 54 0 0 1 108 0" stroke="#fff" stroke-opacity=".3" stroke-width="14"/><path d="M40 138a54 54 0 0 1 86 -43" stroke="#FFC857" stroke-width="14"/></g><path d="M94 138l24 -34" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="94" cy="138" r="7" fill="#fff"/><text x="94" y="165" fill="#fff" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">KPI score</text><g fill="#fff"><rect x="196" y="110" width="26" height="40" rx="4" opacity=".6"/><rect x="232" y="86" width="26" height="64" rx="4" opacity=".8"/><rect x="268" y="62" width="26" height="88" rx="4"/><rect x="304" y="40" width="26" height="110" rx="4" fill="#FFC857"/></g><path d="M200 96l36 -24 36 -22 36 -20" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="5 5"/><rect x="190" y="156" width="150" height="3" rx="2" fill="#fff" opacity=".7"/>'},
+ {t:'Laboratory Inventory & Calibration',tag:'Laboratory',d:'Keep lab inventory in order and track instrument calibration dates so nothing goes out of tolerance.',u:'https://jobexperience01.github.io/Laboratory-Inventory-Calibration-/',c:['#2A7DE1','#0B2A4A'],
+  g:'<g fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"><path d="M60 40h30M68 40v42l-28 52a8 8 0 0 0 7 12h56a8 8 0 0 0 7-12L82 82V40" fill="rgba(255,255,255,.16)"/></g><path d="M50 128h60l-14 -26h-32z" fill="#FFC857"/><g fill="#fff"><rect x="170" y="44" width="190" height="14" rx="4" opacity=".9"/><rect x="170" y="76" width="190" height="14" rx="4" opacity=".7"/><rect x="170" y="108" width="190" height="14" rx="4" opacity=".5"/></g><g fill="#FFC857"><circle cx="152" cy="51" r="6"/><circle cx="152" cy="83" r="6"/></g><circle cx="152" cy="115" r="6" fill="#fff"/><text x="265" y="160" fill="#fff" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">Calibration due</text>'},
+ {t:'SPC: Statistical Process Control',tag:'Quality',d:'Control charts that show whether a process is stable and flag variation before it becomes defects.',u:'https://jobexperience01.github.io/SPC/',c:['#0E9F6E','#0A2F3A'],
+  g:'<g stroke="#fff" stroke-width="2" stroke-dasharray="6 5" opacity=".8"><path d="M24 50h352M24 150h352"/></g><path d="M24 100h352" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M30 104l40 -14 40 20 40 -24 40 18 40 -8 40 24 40 -36 40 18 36 -6" fill="none" stroke="#FFC857" stroke-width="3.5" stroke-linejoin="round"/><g fill="#fff"><circle cx="70" cy="90" r="4.5"/><circle cx="150" cy="86" r="4.5"/><circle cx="230" cy="94" r="4.5"/><circle cx="310" cy="64" r="4.5"/></g><circle cx="270" cy="124" r="7" fill="#FF5A5F"/><text x="34" y="44" fill="#fff" font-family="sans-serif" font-size="11" font-weight="700">UCL</text><text x="34" y="168" fill="#fff" font-family="sans-serif" font-size="11" font-weight="700">LCL</text>'},
+ {t:'MQI Manager',tag:'Quality',d:'Record, track and export the Manufacturing Quality Index to see quality performance at a glance.',u:'https://jobexperience01.github.io/MQI/',c:['#7B4BFF','#1E1245'],
+  g:'<g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"><path d="M70 140a60 60 0 0 1 120 0" stroke-opacity=".25"/><path d="M70 140a60 60 0 0 1 98 -46" stroke="#FFC857"/></g><path d="M130 140l26 -38" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="130" cy="140" r="8" fill="#fff"/><text x="130" y="168" fill="#fff" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">MQI</text><g fill="#fff"><rect x="230" y="104" width="28" height="46" rx="4" opacity=".6"/><rect x="268" y="80" width="28" height="70" rx="4" opacity=".8"/><rect x="306" y="52" width="28" height="98" rx="4" fill="#FFC857"/></g>'},
+ {t:'Benchmark Pareto Chart',tag:'Quality',d:'Rank causes by impact and compare against a benchmark to focus on the vital few.',u:'https://jobexperience01.github.io/Benchmark-Pareto-chart-/',c:['#E5484D','#4A1030'],
+  g:'<g fill="#fff"><rect x="40" y="36" width="36" height="116" rx="4"/><rect x="84" y="78" width="36" height="74" rx="4" opacity=".85"/><rect x="128" y="108" width="36" height="44" rx="4" opacity=".7"/><rect x="172" y="126" width="36" height="26" rx="4" opacity=".55"/><rect x="216" y="136" width="36" height="16" rx="4" opacity=".4"/></g><path d="M58 40C110 54 160 68 234 74" fill="none" stroke="#FFC857" stroke-width="3.5"/><g fill="#FFC857"><circle cx="58" cy="40" r="5"/><circle cx="102" cy="52" r="5"/><circle cx="146" cy="62" r="5"/><circle cx="190" cy="68" r="5"/><circle cx="234" cy="72" r="5"/></g><path d="M30 56h250" stroke="#fff" stroke-width="2" stroke-dasharray="6 5" opacity=".8"/><text x="330" y="60" fill="#fff" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">80%</text><text x="330" y="78" fill="#fff" font-family="sans-serif" font-size="11" text-anchor="middle">benchmark</text>'},
+ {t:'Project Management',tag:'Planning',d:'Plan tasks, timelines and progress on one board to keep projects on schedule.',u:'https://jobexperience01.github.io/Project-management-/',c:['#F2A900','#5A2A0A'],
+  g:'<g fill="#fff"><rect x="40" y="40" width="120" height="16" rx="5"/><rect x="80" y="72" width="140" height="16" rx="5" opacity=".85"/><rect x="130" y="104" width="130" height="16" rx="5" opacity=".7"/><rect x="190" y="136" width="130" height="16" rx="5" opacity=".55"/></g><g fill="#0B3B3C" opacity=".35"><rect x="40" y="40" width="80" height="16" rx="5"/><rect x="80" y="72" width="70" height="16" rx="5"/><rect x="130" y="104" width="30" height="16" rx="5"/></g><path d="M300 36v128" stroke="#FFC857" stroke-width="3" stroke-dasharray="6 5"/><path d="M290 36h20l-10 12z" fill="#FFC857"/><text x="340" y="30" fill="#fff" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">Today</text>'}
+];
+var DASHCO=[
+ {n:'Rahimafrooz Globatt Ltd.',r:'Quality Assurance Department',c:'#0E7C86',d:'Quality tools from my time in the Quality Department: control charts, a manufacturing quality index, problem-solving methods and lab calibration.',t:['SPC: Statistical Process Control','MQI Manager','DMAIC vs A3 Problem Solving','Laboratory Inventory & Calibration']},
+ {n:'Walton Hi-Tech Industries PLC',r:'Process Development',c:'#F2822E',d:'Tools from process development and the production floor: flow mapping, automation, KPIs, benchmarking and project planning.',t:['Value Stream Map (VSM)','Walton Production Automation','KPI Incentive Dashboard','Benchmark Pareto Chart','Project Management']}
 ];
 BLK.dash=function(b){
- A(b,E('h2',null,'Interactive dashboards'),E('p','sub','Tap a card to open the live dashboard.'));
- var g=E('div','dgrid');
- DASH.forEach(function(x){
-  var a=Lk('dcard',x.u);a.setAttribute('aria-label','Open '+x.t+' dashboard');
-  var im=E('div','dimg');
-  im.innerHTML='<svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true" focusable="false"><defs><linearGradient id="dg'+DASH.indexOf(x)+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+x.c[0]+'"/><stop offset="1" stop-color="'+x.c[1]+'"/></linearGradient></defs><rect width="400" height="200" fill="url(#dg'+DASH.indexOf(x)+')"/><circle cx="360" cy="30" r="70" fill="#fff" opacity=".07"/><circle cx="30" cy="190" r="60" fill="#fff" opacity=".06"/>'+x.g+'</svg>';
+ var RMq=matchMedia('(prefers-reduced-motion:reduce)').matches,BEH=RMq?'auto':'smooth';
+ function dashCard(x){
+  var a=Lk('dcard',x.u);a.setAttribute('aria-label','Open '+x.t);
+  var im=E('div','dimg'),id='dg'+DASH.indexOf(x);
+  im.innerHTML='<svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true" focusable="false"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+x.c[0]+'"/><stop offset="1" stop-color="'+x.c[1]+'"/></linearGradient></defs><rect width="400" height="200" fill="url(#'+id+')"/><circle cx="360" cy="30" r="70" fill="#fff" opacity=".07"/><circle cx="30" cy="190" r="60" fill="#fff" opacity=".06"/>'+x.g+'</svg>';
   im.appendChild(E('span','dbadge',x.tag));
   var op=E('span','dopen');op.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';im.appendChild(op);
-  var bd=E('div','dbody');A(bd,E('h3',null,x.t),E('p',null,x.d),E('span','dgo','Open dashboard \u2192'));
-  A(a,im,bd);g.appendChild(a)});
- b.appendChild(g)};
+  var bd=E('div','dbody');A(bd,E('h3',null,x.t),E('p',null,x.d),E('span','dgo','Open live tool \u2192'));
+  return A(a,im,bd)}
+ A(b,E('h2',null,'Live tools by company'),E('p','sub','Step 1: pick a company. Step 2: swipe sideways or use the arrows. Step 3: tap a card to open the live tool.'));
+ var chips=E('div','lt-chips'),wrap=E('div','lt-wrap');
+ DASHCO.forEach(function(co){
+  var items=[];co.t.forEach(function(t){for(var i=0;i<DASH.length;i++)if(DASH[i].t===t){items.push(DASH[i]);break}});
+  if(!items.length)return;
+  var sec=E('section','lt-sec');sec.style.setProperty('--co',co.c);sec.style.scrollMarginTop='70px';
+  var chip=E('button','lt-chip',co.n.split(' ')[0]+' \u00b7 '+items.length+' tools');chip.type='button';chip.style.setProperty('--co',co.c);
+  chip.onclick=function(){sec.scrollIntoView({behavior:BEH,block:'start'})};chips.appendChild(chip);
+  var prev=E('button',null,'\u2039'),next=E('button',null,'\u203A');prev.type=next.type='button';
+  prev.setAttribute('aria-label','Previous tool');next.setAttribute('aria-label','Next tool');prev.disabled=true;
+  var hd=A(E('div','lt-h'),A(E('div'),E('h3',null,co.n),E('div','lt-r',co.r+' \u00b7 '+items.length+' live tools')),A(E('div','lt-ar'),prev,next));
+  var hint=A(E('div','lt-hint'),E('i',null,'\u2192'),E('span',null,'Swipe sideways, then tap a card to open it'));
+  var tr=E('div','lt-track');tr.tabIndex=0;tr.setAttribute('role','region');tr.setAttribute('aria-label',co.n+' live tools');
+  items.forEach(function(x){tr.appendChild(dashCard(x))});
+  var dots=E('div','lt-dots'),db=[];
+  function step(){var c=tr.children[1]||tr.children[0];return c?c.getBoundingClientRect().width+14:270}
+  function atEnd(){return tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4}
+  function sync(){var i=atEnd()?items.length-1:Math.min(items.length-1,Math.round(tr.scrollLeft/step()));db.forEach(function(d,k){d.className=k===i?'on':''});prev.disabled=tr.scrollLeft<4;next.disabled=atEnd()}
+  items.forEach(function(x,i){var d=E('button');d.type='button';d.setAttribute('aria-label','Go to '+x.t);d.onclick=function(){stop();tr.scrollTo({left:i*step(),behavior:BEH})};dots.appendChild(d);db.push(d)});
+  var timer=null,hover=false,vis=false;
+  function stop(){if(timer){clearInterval(timer);timer=null}hint.className='lt-hint done'}
+  function tick(){if(!sec.isConnected){clearInterval(timer);timer=null;return}if(hover||!vis||document.hidden)return;if(atEnd())tr.scrollTo({left:0,behavior:'smooth'});else tr.scrollBy({left:step(),behavior:'smooth'})}
+  prev.onclick=function(){stop();tr.scrollBy({left:-step(),behavior:BEH})};
+  next.onclick=function(){stop();tr.scrollBy({left:step(),behavior:BEH})};
+  tr.addEventListener('scroll',sync,{passive:true});
+  ['touchstart','wheel','keydown'].forEach(function(ev){tr.addEventListener(ev,stop,{passive:true})});
+  tr.addEventListener('mouseenter',function(){hover=true});tr.addEventListener('mouseleave',function(){hover=false});
+  tr.addEventListener('focusin',function(){hover=true});tr.addEventListener('focusout',function(){hover=false});
+  window.addEventListener('resize',sync);
+  if(!RMq){if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(sec);else vis=true;timer=setInterval(tick,3800)}
+  A(sec,hd,E('p','lt-d',co.d),hint,tr,dots);wrap.appendChild(sec);
+  setTimeout(sync,120)});
+ A(b,chips,wrap)};
 BLK.miles=function(b){if(anch('miles'))milestones(b)};
 BLK.bars=function(b){if(anch('bars'))timeline(b)};
 BLK.results=function(b){if(anch('results'))resultsChart(b)};
@@ -1395,23 +1465,52 @@ function vids(pos,o){(D.vid||[]).forEach(function(v){
 function tile(f){var d=h('div','tile'),b=h('b',null,f[0]);d.appendChild(b);d.appendChild(h('span',null,f[1]));d._c=b;return d}
 function slides(){
  var p=D.p,o=[];
- o.push({d:6500,f:function(s){if(p.photo){var im0=h('img','ph');im0.src=p.photo;im0.alt='';s.appendChild(im0)}s.appendChild(h('p','k','Portfolio tour'));s.appendChild(h('h2','big',p.name));s.appendChild(h('p','d',p.post+' · '+p.role));s.appendChild(h('p','d',p.base))}});
+ o.push({d:6000,f:function(s){var g=h('div','gx gxh');g.innerHTML='<svg class="gxg" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#4FC3CC" stroke-width="5" stroke-linecap="round"><circle cx="50" cy="50" r="17"/><circle cx="50" cy="50" r="30" stroke-dasharray="14 9.6"/></g></svg>';if(p.photo){var im0=h('img','ph');im0.src=p.photo;im0.alt='';g.appendChild(im0)}
+  g.appendChild(h('h2','big',p.name));g.appendChild(h('p','gxs','I turn factory problems into machines that work.'));
+  var c=h('div','gxc');['Mechanical engineer','Lean Six Sigma Green Belt','EIT, Saskatchewan'].forEach(function(t,i){var b=h('span',null,t);b.style.animationDelay=(.6+i*.25)+'s';c.appendChild(b)});g.appendChild(c);s.appendChild(g)}});
  vids('start',o);
- o.push({d:7000,f:function(s){s.appendChild(h('p','k','At a glance'));var g=h('div','tiles');p.facts.forEach(function(f){g.appendChild(tile(f))});s.appendChild(g)}});
- var tl=D.p.tl||[];
- o.push({d:7000,f:function(s){s.appendChild(h('p','k','Professional'));s.appendChild(h('h2','t',p.role||p.post));s.appendChild(h('p','d',cut(p.intro,280)));if(p.reg){var r0=h('div','rw');r0.appendChild(h('b',null,'Registration'));r0.appendChild(h('span',null,p.reg));s.appendChild(r0)}}});
- if(tl.length)o.push({d:8500,f:function(s){s.appendChild(h('p','k','Career timeline'));s.appendChild(h('h2','t','Roles, degrees and awards'));tl.slice(0,6).forEach(function(r){var w0=h('div','rw');w0.appendChild(h('b',null,r[0]+'  '+cut(r[1],70)));if(r[2])w0.appendChild(h('span',null,cut(r[2],80)));s.appendChild(w0)})}});
- var c=sec('career').items;
- if(c.length)o.push({d:9000,f:function(s){s.appendChild(h('p','k','Experience'));s.appendChild(h('h2','t','Five roles, 2017 to today'));c.forEach(function(it){var r=h('div','rw');r.appendChild(h('b',null,it.t));r.appendChild(h('span',null,it.m));s.appendChild(r)})}});
- var mc=sec('wtv').items.filter(function(i){return i.pg!=null});if(mc.length)o.push({d:9000,f:function(s){s.appendChild(h('p','k','Machines commissioned'));s.appendChild(h('h2','t',mc.length+' machines, USD 546K'));mc.slice(0,5).forEach(function(it){var r=h('div','rw');r.appendChild(h('b',null,it.t));r.appendChild(h('span',null,it.pg+'% · '+it.m));s.appendChild(r)});s.appendChild(h('p','d','And '+(mc.length-5)+' more, including hot stamping, completed.'))}});
- var v=[];D.sections.forEach(function(x){x.items.forEach(function(it){if(it.v)v.push(it)})});
- if(v.length)o.push({d:9000,f:function(s){s.appendChild(h('p','k','Results'));s.appendChild(h('h2','t','Before and after'));v.slice(0,3).forEach(function(it){var r=h('div','vrow');r.appendChild(h('small',null,it.t+' · '+it.v.l));var w=h('div','vs');w.appendChild(h('s',null,it.v.a+it.v.u));w.appendChild(h('strong',null,it.v.b+it.v.u));w.appendChild(h('em',null,'Down '+Math.round((1-it.v.b/it.v.a)*100)+'%'));r.appendChild(w);s.appendChild(r)})}});
- var k=sec('skills').items;
- if(k.length)o.push({d:8000,f:function(s){s.appendChild(h('p','k','Skills and tools'));k.forEach(function(it){var r=h('div','rw');r.appendChild(h('b',null,it.t));r.appendChild(h('span',null,cut(it.s,110)));s.appendChild(r)})}});
- var r=sec('research').items;
- if(r.length)o.push({d:8000,f:function(s){s.appendChild(h('p','k','Publications'));s.appendChild(h('h2','t',r.length+' papers and manuscripts'));r.slice(0,3).forEach(function(it){var w=h('div','rw');w.appendChild(h('b',null,cut(it.t,90)));if(it.m)w.appendChild(h('span',null,cut(it.m,80)));s.appendChild(w)})}});
- var e=sec('edu').items;
- if(e.length)o.push({d:7500,f:function(s){s.appendChild(h('p','k','Education and registration'));e.slice(0,4).forEach(function(it){var w=h('div','rw');w.appendChild(h('b',null,it.t));if(it.m)w.appendChild(h('span',null,it.m));s.appendChild(w)})}});
+
+ function cu(e,n,pre,suf){if(RM){e.textContent=pre+n.toLocaleString('en-US')+suf;return}var t0=null;(function f(t){if(!t0)t0=t;var q=Math.min(1,(t-t0)/1300);e.textContent=pre+Math.round(n*(1-Math.pow(1-q,3))).toLocaleString('en-US')+suf;if(q<1&&P)requestAnimationFrame(f)})(performance.now())}
+ function kk(s,t){s.appendChild(h('p','k',t))}
+ function sv2(w,hh,inner){var d=h('div','gxsv');d.innerHTML='<svg viewBox="0 0 '+w+' '+hh+'" width="100%" aria-hidden="true">'+inner+'</svg>';return d}
+ function chips(a,c0){var c=h('div','gxw gxsm');a.forEach(function(t,i){var b=h('span',null,t);b.style.animationDelay=(c0||0)+i*.2+'s,'+(i*.2+.6)+'s';c.appendChild(b)});return c}
+ function bars(rows){var g=h('div');rows.forEach(function(x,i){var r=h('div','gxr');r.style.animationDelay=(i*.25)+'s';r.appendChild(h('small',null,x[0]));var tk=h('div','gxb'),a=h('i','a'),b=h('i','b');b.style.setProperty('--w',x[1]+'%');b.style.animationDelay=(.4+i*.25)+'s';tk.appendChild(a);tk.appendChild(b);r.appendChild(tk);var m=h('em',null,x[2]);m.style.animationDelay=(1+i*.25)+'s';r.appendChild(m);g.appendChild(r)});return g}
+ var imgs=[];D.sections.forEach(function(x){x.items.forEach(function(it){(it.x||[]).forEach(function(y){if(y.k==='img'&&y.u)imgs.push(y.u)})})});
+ var vv=[];D.sections.forEach(function(x){x.items.forEach(function(it){if(it.v&&it.v.a&&it.v.b!=null)vv.push(it)})});
+ var LN='stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1" class="gxd1"';
+ o.push({d:6500,f:function(s){kk(s,'Quality');var g=h('div','gx');g.appendChild(h('h2','t','Control the process, cut the scrap'));
+  var P0=[60,52,66,58,70,55,62,50,64,57,60,53],pts=P0.map(function(y,i){return[20+i*24,y]}),d='M'+pts.map(function(p){return p[0]+','+p[1]}).join(' L');
+  g.appendChild(sv2(300,120,'<g stroke="#ff8a8a" stroke-dasharray="4 4" stroke-width="1.5"><path d="M10 25H290M10 95H290"/></g><path d="M10 60H290" stroke="#fff" stroke-opacity=".4" stroke-width="1.5"/><g fill="#fff" fill-opacity=".7" font-size="9"><text x="12" y="21">UCL</text><text x="12" y="108">LCL</text></g><path d="'+d+'" stroke="#4FC3CC" stroke-width="3" '+LN+'/>'+pts.map(function(p,i){return'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#4FC3CC" class="gxpt" style="animation-delay:'+(.2+i*.15)+'s"/>'}).join('')));
+  g.appendChild(bars([['Lead scrap, Green Belt project (0.65% to 0.20%)',31,'-69%']]));g.appendChild(chips(['3rd of 91 teams','SPC and CpK','FMEA','NCPR','Root cause'],1.2));s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Process and continuous improvement');var g=h('div','gx');g.appendChild(h('h2','t','Plan. Do. Check. Act. Repeat.'));
+  g.appendChild(sv2(140,120,'<g class="gxrot"><circle cx="70" cy="60" r="42" fill="none" stroke="#4FC3CC" stroke-width="10" stroke-dasharray="55 9.9" stroke-linecap="round"/></g><g fill="#fff" font-size="15" font-weight="700" text-anchor="middle"><text x="70" y="30">P</text><text x="102" y="65">D</text><text x="70" y="100">C</text><text x="38" y="65">A</text></g>'));
+  g.lastChild.style.maxWidth='170px';g.lastChild.style.margin='0 auto 10px';
+  g.appendChild(bars(vv.slice(0,3).map(function(it){var v=it.v;return[v.l+' ('+v.a+(v.u||'')+' to '+v.b+(v.u||'')+')',Math.max(4,v.b/v.a*100),'-'+Math.round((1-v.b/v.a)*100)+'%']})));s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Project installation');var g=h('div','gx');var n=h('b','gxbig','0');n.style.fontSize='clamp(2.6rem,12vw,4rem)';g.appendChild(n);cu(n,546,'$','K');g.appendChild(h('p','gxs','of machines managed, from approval to handover'));
+  g.appendChild(bars([['400-ton power press',100,'$259K'],['Sealant dispensing line',69,'$180K'],['Engraving machine',20,'$51K'],['CNC lathe',8,'$22K'],['Servo tapping',8,'$20K'],['Hot stamping',5,'$12K']]));
+  if(imgs.length){var ro=h('div','gxim');imgs.slice(0,3).forEach(function(u,i){var im=h('img');im.src=u;im.alt='';im.style.animationDelay=(1.5+i*.2)+'s';ro.appendChild(im)});g.appendChild(ro)}s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Data automation');var g=h('div','gx');g.appendChild(h('h2','t','From paper to phone, hours to seconds'));
+  var v=h('div','gxa');[['Paper count','1 to 2 months of prep'],['Phone app','scan, 10 s per item'],['Live report','mismatch found instantly']].forEach(function(x,i){if(i){var ar=h('span','gxar','\u203A');ar.style.animationDelay=(i*.8)+'s';v.appendChild(ar)}var n=h('div','gxq gxcd');n.style.animationDelay=(.2+i*.8)+'s';n.appendChild(h('span',null,x[0]));n.appendChild(h('small',null,x[1]));v.appendChild(n)});g.appendChild(v);g.appendChild(h('i','gxm'));
+  g.appendChild(chips(['Inventory Auditor Pro','Google AppSheet','Looker Studio','Power BI','Python'],1.4));s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Data-driven manufacturing');var g=h('div','gx gxrow');
+  var l=h('div');l.appendChild(sv2(100,100,'<circle cx="50" cy="50" r="36" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="10"/><circle cx="50" cy="50" r="36" fill="none" stroke="#4FC3CC" stroke-width="10" stroke-linecap="round" transform="rotate(-90 50 50)" class="gxdn"/><text x="50" y="57" fill="#fff" font-size="22" font-weight="700" text-anchor="middle">98%</text>'));l.appendChild(h('small',null,'schedule met'));
+  var r=h('div'),M=[97,99,100,98,96,100,98],pp=M.map(function(v,i){return(10+i*30)+','+(70-(v-95)*10)}),dd='M'+pp.join(' L');
+  r.appendChild(sv2(200,90,'<path d="M10 20H190M10 70H190" stroke="rgba(255,255,255,.2)"/><path d="'+dd+'" stroke="#4FC3CC" stroke-width="3" '+LN+'/>'+pp.map(function(p,i){var q=p.split(',');return'<circle cx="'+q[0]+'" cy="'+q[1]+'" r="3.5" fill="#fff" class="gxpt" style="animation-delay:'+(.3+i*.25)+'s"/>'}).join('')));r.appendChild(h('small',null,'Jul 2022 to Jan 2023'));
+  g.appendChild(l);g.appendChild(r);var w=h('div','gx');w.appendChild(h('h2','t','Dashboards that run the morning meeting'));w.appendChild(chips(['OEE and SAM','Morning meeting dashboard','SCM dashboard','KPI model: 5th of ~30,000'],.8));s.appendChild(w);s.insertBefore(g,w)}});
+ o.push({d:6500,f:function(s){kk(s,'Production process');var g=h('div','gx');g.appendChild(h('h2','t','Raw material to finished TV'));
+  var st=['PCBA','Sheet metal','Injection','Panel','Assembly','Packing'],v=h('div','gxp');v.style.gridTemplateColumns='repeat(6,1fr)';st.forEach(function(x,i){var n=h('div','gxq');n.style.animationDelay=(.3+i*.6)+'s';n.appendChild(h('b',null,String(i+1)));n.appendChild(h('span',null,x));v.appendChild(n)});g.appendChild(v);g.appendChild(h('i','gxm'));
+  g.appendChild(chips(['Cycle time and manpower','Capacity study','SAM','Layout and cleanroom'],2.4));s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Inventory and data analysis');var g=h('div','gx');g.appendChild(h('h2','t','Find the few causes that matter'));
+  var B=[95,70,50,32,20,12,8],t=B.reduce(function(a,b){return a+b},0),c=0,cp=B.map(function(b,i){c+=b;return(25+i*38)+','+(105-c/t*95)});
+  g.appendChild(sv2(300,120,'<path d="M10 110H290" stroke="rgba(255,255,255,.3)"/>'+B.map(function(b,i){return'<rect x="'+(14+i*38)+'" y="'+(110-b)+'" width="24" height="'+b+'" rx="3" fill="#4FC3CC" class="gxu" style="animation-delay:'+(i*.15)+'s"/>'}).join('')+'<path d="M'+cp.join(' L')+'" stroke="#ffd166" stroke-width="2.5" '+LN+' style="animation-delay:1s"/>'));
+  g.appendChild(chips(['Pareto of speaker defects','Packaging benchmark in Python','Parts analysis at Brandt','Cost comparison'],1.2));s.appendChild(g)}});
+ var rs=sec('research').items,nj=rs.filter(function(i){return(i.g||[]).indexOf('Journal')>-1}).length,nc=rs.filter(function(i){return(i.g||[]).indexOf('Conference')>-1}).length;
+ if(rs.length)o.push({d:6500,f:function(s){kk(s,'Research and publications');var g=h('div','gx');var n=h('b','gxbig','0');g.appendChild(n);cu(n,rs.length,'','');g.appendChild(h('p','gxs','papers and manuscripts'));
+  var t=h('div','gxt');[[nj,'journal papers'],[nc,'conference papers']].forEach(function(x,i){var d=h('div','gxk');d.style.animationDelay=(i*.3)+'s';var b=h('b','0');d.appendChild(b);d.appendChild(h('span',null,x[1]));t.appendChild(d);cu(b,x[0],'','')});g.appendChild(t);
+  var st=h('div','gxd');for(var i=0;i<Math.min(rs.length,9);i++){var d=h('i');d.style.animationDelay=(i*.15)+'s';st.appendChild(d)}g.appendChild(st);s.appendChild(g)}});
+ o.push({d:6500,f:function(s){kk(s,'Lean Six Sigma and lean tools');var g=h('div','gx');g.appendChild(h('h2','t','Define. Measure. Analyze. Improve. Control.'));
+  var v=h('div','gxv');['Define','Measure','Analyze','Improve','Control'].forEach(function(x,i){var n=h('span',null,x);n.style.animationDelay=(.2+i*.5)+'s';v.appendChild(n)});g.appendChild(v);
+  g.appendChild(chips(['PDCA','Fishbone','5 Whys','Pareto','FMEA and RPN','Poka-Yoke','SPC and CpK','CTQ','Green Card ideas'],2.2));s.appendChild(g)}});
  vids('end',o);
  o.push({d:0,f:function(s){s.appendChild(h('p','k','Let\u2019s talk'));s.appendChild(h('h2','t','Open to engineering roles'));p.contact.forEach(function(x){if(!x[1])return;var w=h('div','rw');w.appendChild(h('span',null,x[0]));var b=h('b');if(x[2]){var a=h('a',null,x[1]);a.href=x[2];a.style.color='inherit';b.appendChild(a)}else b.textContent=x[1];w.appendChild(b);s.appendChild(w)});
   var g=h('button','go','Explore the full site');g.type='button';g.onclick=function(){closeP()};var rp=h('button','go o','Replay');rp.type='button';rp.onclick=function(){go(0);play(true)};s.appendChild(g);s.appendChild(rp)}});
@@ -1764,6 +1863,93 @@ var app=document.getElementById('app'),t=null;
 function q(){clearTimeout(t);t=setTimeout(run,60)}
 if(app)new MutationObserver(q).observe(app,{childList:true,subtree:true});
 window.addEventListener('hashchange',q);q();
+})();
+</script>
+<style id="org-css">
+.pl .gxsv{margin:6px 0 12px}.pl .gxd1{stroke-dasharray:1;animation:gxdr 2.2s .3s both}.pl .gxpt{animation:gxpop .4s both}.pl .gxrot{transform-box:fill-box;transform-origin:center;animation:gxspin 8s linear infinite}
+.pl .gxdn{stroke-dasharray:226;animation:gxdn 1.8s .3s both}.pl .gxu{transform-box:fill-box;transform-origin:bottom;animation:gxup .7s both}.pl .gxsm span{font-size:.82rem;padding:4px 11px}
+.pl .gxrow{display:grid;grid-template-columns:1fr 2fr;gap:12px;text-align:center}.pl .gxrow small,.pl .gxsv+small{opacity:.7;font-size:.78rem}
+.pl .gxa{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:6px;margin:6px 0}.pl .gxcd{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 8px}
+.pl .gxar{font-size:1.8rem;color:#4FC3CC;animation:gxpop .5s both}.pl .gxim{display:flex;gap:8px;margin-top:10px}.pl .gxim img{flex:1;min-width:0;height:70px;object-fit:cover;border-radius:10px;animation:gxpop .5s both}
+.pl .gxv{display:flex;margin:10px 0}.pl .gxv span{flex:1;text-align:center;font-size:.72rem;font-weight:700;padding:12px 2px 12px 8px;background:#4FC3CC;color:#08202f;clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%,12% 50%);margin-left:-6px;animation:gxpop .5s both}.pl .gxv span:first-child{margin:0;clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%)}
+@keyframes gxdr{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}@keyframes gxdn{from{stroke-dasharray:0 226}to{stroke-dasharray:222 226}}@keyframes gxup{from{transform:scaleY(0)}}
+
+.pl .gx{text-align:left}.pl .gx.gxh{text-align:center}.pl .gxg{width:96px;height:96px;display:block;margin:0 auto 6px;animation:gxspin 9s linear infinite}
+.pl .gxs{font-size:1.2rem;opacity:.9;margin:6px 0 14px}.pl .gxc{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pl .gxc span,.pl .gxw span{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:20px;padding:5px 13px;font-size:.9rem;animation:gxpop .5s both}
+.pl .gxh .ph{display:block;margin:6px auto 14px}
+.pl .gxj{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding-top:22px}.pl .gxl{position:absolute;left:10%;right:10%;top:30px;height:3px;background:#4FC3CC;border-radius:2px;transform-origin:left;animation:gxline 3.6s .3s both}
+.pl .gxn{text-align:center;position:relative;animation:gxpop .5s both}.pl .gxn::before{content:'';display:block;width:16px;height:16px;border-radius:50%;background:#4FC3CC;margin:0 auto 10px;box-shadow:0 0 0 5px rgba(79,195,204,.25)}
+.pl .gxn b{display:block;font-size:1.05rem}.pl .gxn span{display:block;font-size:.82rem}.pl .gxn small{display:block;opacity:.65;font-size:.74rem}
+.pl .gxt{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pl .gxk{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px;animation:gxpop .6s both}
+.pl .gxk b{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:clamp(2rem,9vw,3rem);line-height:1;color:#4FC3CC}.pl .gxk span{opacity:.8;font-size:.85rem}
+.pl .gxr{margin:0 0 16px;position:relative;animation:up .5s both}.pl .gxr small{display:block;opacity:.85;margin-bottom:5px}.pl .gxb{position:relative;height:16px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
+.pl .gxb i{position:absolute;left:0;top:0;bottom:0;border-radius:8px}.pl .gxb .a{width:100%;background:rgba(255,255,255,.28)}.pl .gxb .b{width:var(--w);background:#4FC3CC;animation:gxbar 1.1s both cubic-bezier(.2,.8,.2,1)}
+.pl .gxr em{position:absolute;right:0;top:0;font-style:normal;background:#4FC3CC;color:#08202f;border-radius:20px;padding:1px 10px;font-weight:700;font-size:.85rem;animation:gxpop .5s both}
+.pl .gxp{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;position:relative}.pl .gxq{text-align:center;animation:gxpop .5s both}
+.pl .gxq b{display:flex;width:38px;height:38px;border-radius:50%;background:#4FC3CC;color:#08202f;align-items:center;justify-content:center;margin:0 auto 8px}.pl .gxq span{display:block;font-weight:600;font-size:.9rem}.pl .gxq small{display:block;opacity:.7;font-size:.74rem}
+.pl .gxm{display:block;width:14px;height:14px;border-radius:50%;background:#fff;margin:18px 0 0 6%;animation:gxrun 4s .3s both ease-in-out}
+.pl .gxw{display:flex;flex-wrap:wrap;gap:10px}.pl .gxw span{font-size:1rem;padding:8px 16px;animation:gxpop .5s both,gxfloat 3s ease-in-out infinite alternate}
+.pl .gxbig{display:block;font-family:"Source Serif 4",Georgia,serif;font-size:clamp(4rem,20vw,7rem);line-height:1;color:#4FC3CC}
+.pl .gxd{display:flex;gap:8px;margin-top:10px}.pl .gxd i{width:28px;height:38px;border-radius:4px;background:rgba(255,255,255,.85);animation:gxdrop .5s both}
+@keyframes gxspin{to{transform:rotate(360deg)}}@keyframes gxpop{from{opacity:0;transform:scale(.7) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes gxline{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes gxbar{from{width:100%}to{width:var(--w)}}
+@keyframes gxrun{from{margin-left:6%}to{margin-left:calc(94% - 14px)}}@keyframes gxfloat{to{transform:translateY(-6px)}}@keyframes gxdrop{from{opacity:0;transform:translateY(-30px) rotate(-8deg)}to{opacity:1;transform:none}}
+@media(max-width:420px){.pl .gxn small,.pl .gxq small{display:none}}
+@media(prefers-reduced-motion:reduce){.pl .gx *{animation:none!important}}
+
+.orgb{font:inherit;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.88rem}
+.orgv{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.orgv .in{max-width:760px;margin:0 auto}.orgv h2{margin:22px 0 4px}.orgv .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.orgv .r{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none}.orgv .r small{color:var(--mute)}
+.orgv details{border:1px solid var(--line);border-radius:8px;background:var(--panel);margin:10px 0;padding:0 14px}.orgv summary{cursor:pointer;padding:12px 0;font-weight:600}
+.orgv .tb{display:flex;gap:6px;margin:12px 0}.orgv .tb button{flex:1}
+.orgc{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.orgc button[aria-pressed=true]{background:var(--pri);color:var(--prink);border-color:var(--pri)}
+.orgg{border:1px solid var(--line);border-radius:8px;background:var(--panel);margin:10px 0;padding:0 12px}.orgg>summary{cursor:pointer;padding:11px 0;font-weight:600;display:flex;justify-content:space-between}.orgg>summary span{color:var(--mute);font-weight:400}.orgg>.media{padding-bottom:12px}
+</style>
+<script>
+(function(){
+var TOP=[['400-ton power press',[['projects','p5'],['wtv','w1']]],
+['Sealant dispensing line and cleanroom',[['projects','p7'],['wtv','w2'],['pm','pm2'],['pm','pm3']]],
+['Engraving and highlighting machine',[['wtv','w3']]],['Servo tapping machine',[['wtv','w4']]],
+['Knurling nut / in-mold nut',[['wtv','w5'],['projects','p8']]],['Hot stamping machine',[['projects','p6'],['wtv','w6']]],
+['U-yoke cutting machine',[['wtv','w7']]],['Voice coil jig removal machine',[['projects','p1'],['wtv','w8']]],
+['How I run a machine project',[['pm','pm1']]],['Quality, tests and dashboards',[['quality','q1'],['quality','q8']]],
+['Brandt inventory work',[['projects','p16'],['projects','p17']]],['Papers and publications',[['research','r1']]]];
+function E(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function S(){return window.__site}
+function itm(s,i){var D=S().D,a=D.sections.filter(function(x){return x.id===s})[0];return a&&a.items.filter(function(y){return y.id===i})[0]}
+function nfiles(it){return(it.x||[]).filter(function(x){return x.k!=='img'}).length}
+function map(){
+ var D=S().D,v=E('div','orgv'),w=E('div','in'),cur='sec';v.setAttribute('role','dialog');v.setAttribute('aria-label','Site map');
+ var top=E('div','top');top.appendChild(E('h1',null,'Site map'));var x=E('button','orgb','Close');x.type='button';x.onclick=function(){v.remove()};top.appendChild(x);w.appendChild(top);
+ w.appendChild(E('p','sub','Every page and file on this site, in one place. Tap any line to go there.'));
+ var tb=E('div','tb'),body=E('div');
+ function go(a){a.onclick=function(){setTimeout(function(){v.remove()},0)}}
+ function row(h,t,n){var a=E('a','r');a.href=h;a.appendChild(E('span',null,t));a.appendChild(E('small',null,n));go(a);return a}
+ function show(){body.textContent='';[].forEach.call(tb.children,function(b){b.setAttribute('aria-pressed',b.dataset.k===cur?'true':'false')});
+  if(cur==='sec'){S().tabs().forEach(function(t){if(!t.seg||!t.seg.length)return;var d=E('details');d.open=true;d.appendChild(E('summary',null,t.n));
+    t.seg.forEach(function(g){var n=0,p=0,seen={};(g.src||[]).concat(g.pin||[]).forEach(function(id){var s=D.sections.filter(function(z){return z.id===id})[0];if(s)s.items.forEach(function(it){if(seen[id+it.id])return;seen[id+it.id]=1;p++;n+=nfiles(it)})});
+     if(g.all){D.sections.forEach(function(s){s.items.forEach(function(it){if(g.all.test(it.m||'')){p++;n+=nfiles(it)}})})}
+     d.appendChild(row('#/t/'+t.id+'/'+g.id,g.n,p+(p===1?' page':' pages')+(n?', '+n+' files':'')))});body.appendChild(d)});
+   var d2=E('details');d2.appendChild(E('summary',null,'All documents'));d2.appendChild(row('#/docs','Document library',''));d2.appendChild(row('#/search','Search',''));body.appendChild(d2)}
+  else{body.appendChild(E('p','sub','Each topic once, with every page about it.'));TOP.forEach(function(t){var d=E('details');d.appendChild(E('summary',null,t[0]));
+    t[1].forEach(function(r){var it=itm(r[0],r[1]);if(!it)return;var n=nfiles(it);d.appendChild(row('#/s/'+r[0]+'/'+r[1],it.t,n?n+' files':''))});if(d.children.length>1)body.appendChild(d)})}}
+ [['sec','By section'],['top','By topic']].forEach(function(k){var b=E('button','orgb',k[1]);b.type='button';b.dataset.k=k[0];b.onclick=function(){cur=k[0];show()};tb.appendChild(b)});
+ w.appendChild(tb);w.appendChild(body);v.appendChild(w);document.body.appendChild(v);show();x.focus()}
+function addBtn(){var a=document.querySelector('.appbar .acts');if(!a||a.querySelector('.orgmap'))return;var b=E('button','orgb orgmap','Map');b.type='button';b.setAttribute('aria-label','Open site map');b.onclick=map;a.insertBefore(b,a.firstChild)}
+var TY=[['Videos',/video|\.mp4|media\d|tapping_machine/i],['Spreadsheets',/\.xls|\.csv|google sheet|spreadsheets\/d/i],['Slides',/\.ppt|presentation|deck/i],['Word documents',/\.docx?\b/i],['Folders',/folder/i],['Dashboards and links',/looker|dashboard|portfolio site|\blink\b/i],['PDF reports',/\.pdf/i]];
+function typ(c){var t=c.textContent;for(var i=0;i<TY.length;i++)if(TY[i][1].test(t))return TY[i][0];return'Other files'}
+function tidy(m){if(m.dataset.org)return;var cs=[].filter.call(m.children,function(c){return c.classList.contains('lnk')&&c.querySelector('strong')});if(cs.length<7)return;m.dataset.org='1';
+ var g={},o=[];cs.forEach(function(c){var t=typ(c);if(!g[t]){g[t]=[];o.push(t)}g[t].push(c)});if(o.length<2)return;
+ var bar=E('div','orgc'),all=E('button','orgb','All '+cs.length);all.type='button';all.setAttribute('aria-pressed','true');bar.appendChild(all);var ds={};
+ o.sort(function(a,b){return g[b].length-g[a].length});
+ o.forEach(function(t,i){var d=E('details','orgg'),s=E('summary');s.appendChild(E('b',null,t));s.appendChild(E('span',null,g[t].length+(g[t].length===1?' file':' files')));d.appendChild(s);var mm=E('div','media');g[t].forEach(function(c){mm.appendChild(c)});d.appendChild(mm);d.open=i===0;ds[t]=d;m.appendChild(d);
+  var b=E('button','orgb',t+' '+g[t].length);b.type='button';b.setAttribute('aria-pressed','false');b.onclick=function(){[].forEach.call(bar.children,function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');o.forEach(function(k){ds[k].hidden=k!==t;ds[k].open=k===t})};bar.appendChild(b)});
+ all.onclick=function(){[].forEach.call(bar.children,function(x){x.setAttribute('aria-pressed','false')});all.setAttribute('aria-pressed','true');o.forEach(function(k,i){ds[k].hidden=false;ds[k].open=i===0})};
+ m.insertBefore(bar,m.firstChild)}
+var t=null;function run(){clearTimeout(t);t=setTimeout(function(){try{if(!S())return;addBtn();[].forEach.call(document.querySelectorAll('#main .media, #app .media'),tidy)}catch(e){}},80)}
+var app=document.getElementById('app')||document.body;new MutationObserver(run).observe(app,{childList:true,subtree:true});window.addEventListener('hashchange',run);run();
 })();
 </script>
 </body>
